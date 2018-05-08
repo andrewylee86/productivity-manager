@@ -9,18 +9,37 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 const renderActivities = (category, activities) => {
 
+  let styleCategoryHeaderA = {
+    font: 'Open Sans', 
+    background: '#33691E', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%'
+  };
+
+  let styleCategoryHeaderB = {
+    font: 'Open Sans', 
+    background: '#4DB6AC', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%'
+  };
+
+  let styleCategoryHeaderC = {
+    font: 'Open Sans', 
+    background: '#FF5722', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%'
+  };
+
   return (
     <div>
-      <Paper 
-        style={
-          {font: 'Open Sans', 
-          background: '#00BCD4', 
-          padding: '10px 5px 10px 5px',
-          textAlign: 'center',
-          color: 'white',
-          fontWeight: 'bolder',
-          fontSize: '115%'}}
-      >
+      
+      <Paper style={styleCategoryHeaderA}>
         {category[0].toUpperCase() + category.slice(1, category.length)}
       </Paper>
       {activities[category].map((activity, index) => {

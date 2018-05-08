@@ -9,8 +9,8 @@ const initialState = {
     {'app': 'Chrome', 'title': 'Youtube - WTF IS REDUX', 'startTime': "May 7th 2018, 5:55:26 pm", 'endTime': "May 7th 2018, 5:59:46 pm"},
   ],
   distracting: [
-    {'app': 'Chrome', 'title': 'Facebook', 'startTime': "May 7th 2018, 5:51:26 pm", 'endTime': "May 7th 2018, 5:51:46 pm"},
-    {'app': 'Chrome', 'title': 'gchat', 'startTime': "May 7th 2018, 5:51:26 pm", 'endTime': "May 7th 2018, 5:51:47 pm"},
+    {'app': 'Google Chrome', 'title': 'Facebook', 'startTime': "May 7th 2018, 5:51:26 pm", 'endTime': "May 7th 2018, 5:51:46 pm"},
+    {'app': 'Google Chrome', 'title': 'gchat', 'startTime': "May 7th 2018, 5:51:26 pm", 'endTime': "May 7th 2018, 5:51:47 pm"},
   ]
 }
 
