@@ -2,43 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import ProductivityScore from '../../containers/ProductivityScore.jsx';
+import {changeCategory} from '../../actions/activityActions';
 
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import RaisedButton from 'material-ui/RaisedButton';
 import Chip from 'material-ui/Chip';
 
-const renderActivities = (category, activities) => {
-
-  let styleCategoryHeaderA = {
-    font: 'Open Sans', 
-    background: '#4CAF50', 
-    padding: '10px 5px 10px 5px',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: '115%',
-    margin: '0px 0px 15px 0px'
-  };
-
-  let styleCategoryHeaderB = {
-    font: 'Open Sans', 
-    background: '#4DB6AC', 
-    padding: '10px 5px 10px 5px',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: '115%',
-    margin: '0px 0px 15px 0px'
-  };
-
-  let styleCategoryHeaderC = {
-    font: 'Open Sans', 
-    background: '#FF7043', 
-    padding: '10px 5px 10px 5px',
-    textAlign: 'center',
-    color: 'white',
-    fontSize: '115%',
-    margin: '0px 0px 15px 0px'
-  };
+const ipc = require('electron').ipcRenderer;
+ipc.on('ping', (event, message) => {
+  console.log(message);
+})
 
   const showCategoryHeader = () => {
 
@@ -72,6 +46,31 @@ const renderActivities = (category, activities) => {
             .diff(moment(activity.startTime, "MMMM Do YYYY, h:mm:ss a"))
           )
           .asSeconds();
+
+const renderActivities = (category, activities) => {
+  return (
+    <div>
+
+      <Paper 
+        style={
+          {font: 'Open Sans', 
+          background: '#00BCD4', 
+          padding: '10px 5px 10px 5px',
+          textAlign: 'center',
+          color: 'white',
+          fontWeight: 'bolder',
+          fontSize: '115%'}}
+      >
+        {category[0].toUpperCase() + category.slice(1, category.length)}
+      </Paper>
+      {activities[category].map((activity, index) => {
+        // let duration = moment
+        //   .duration(
+        //     moment(activity.endTime, "MMMM Do YYYY, h:mm:ss a")
+        //     .diff(moment(activity.startTime, "MMMM Do YYYY, h:mm:ss a"))
+        //   )
+        //   .asSeconds();
+
         let styleTick = {
           font: 'Arial', 
           //background: '#E8F5E9', 
@@ -99,9 +98,18 @@ const renderActivities = (category, activities) => {
           >
             <b>{activity.app}</b> <br/>
             {activity.title} <br/>
-            <div style={{margin: '5px 0px 0px 0px'}}>{duration + ' seconds'} </div>
+
+        {/* <div style={{margin: '5px 0px 0px 0px'}}>{duration + ' seconds'} </div>*/}
+
+  
+
             <br/>
-            <button>productive</button> <button>neutral</button> <button>distracting</button>
+            <button name="productive" onClick={(e) => {
+                changeCategory(activity.id, category, 'productive')}
+              }>productive</button>
+            <button onClick={() => {changeCategory(activity.id, category, 'neutral')}}>neutral</button>
+            <button onClick={() => {changeCategory(activity.id, category, 'distracting')}}>distracting</button>
+
           </Paper>
         )
       })}
@@ -110,8 +118,7 @@ const renderActivities = (category, activities) => {
   );
 }
 
-const Activity = ({activities}) => {
-
+const Activity = ({ activities, clickHandler }) => {
   const style = {
     margin: '8px',
     padding: '10px',
@@ -125,13 +132,13 @@ const Activity = ({activities}) => {
   return (
     <div>
       <Paper style={style}>
-        {renderActivities('productive', activities)}
+        {renderActivities('productive', activities, clickHandler)}
       </Paper>
       <Paper style={style}>
-        {renderActivities('neutral', activities)}
+        {renderActivities('neutral', activities, clickHandler)}
       </Paper>
       <Paper style={style}>
-        {renderActivities('distracting', activities)}
+        {renderActivities('distracting', activities, clickHandler)}
       </Paper>
       <Paper style={style}>
         <ProductivityScore />
@@ -139,10 +146,47 @@ const Activity = ({activities}) => {
     </div>
   )
 }
+          
+  let styleCategoryHeaderA = {
+    font: 'Open Sans', 
+    background: '#4CAF50', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%',
+    margin: '0px 0px 15px 0px'
+  };
 
+  let styleCategoryHeaderB = {
+    font: 'Open Sans', 
+    background: '#4DB6AC', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%',
+    margin: '0px 0px 15px 0px'
+  };
+
+  let styleCategoryHeaderC = {
+    font: 'Open Sans', 
+    background: '#FF7043', 
+    padding: '10px 5px 10px 5px',
+    textAlign: 'center',
+    color: 'white',
+    fontSize: '115%',
+    margin: '0px 0px 15px 0px'
+  };
 
 const mapStateToProps = state => ({
   activities: state.activities
 })
 
-export default connect(mapStateToProps)(Activity) 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clickHandler: (id, oldCat, newCat) => {
+      if (oldCat !== newCat) dispatch(changeCategory(id, oldCat, newCat));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Activity) 
