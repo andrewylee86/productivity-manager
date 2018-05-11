@@ -1,6 +1,6 @@
 //pure, centralized updates to store
 
-import { GET_ACTIVITIES, ADD_ACTIVITY, PATCH_ACTIVITY, CATEGORIZE_ACTIVITY } from '../actions/types'; 
+import { GET_ACTIVITIES, ADD_ACTIVITY, PATCH_ACTIVITY, CATEGORIZE_ACTIVITY, DELETE_ACTIVITY } from '../actions/types'; 
 
 const initialState = {
   neutral: [
@@ -42,6 +42,13 @@ const activities = (state = initialState, action) => {
         ...state,
         neutral: [... state.neutral, newData],
         nextId: ++state.nextId
+      }
+    case DELETE_ACTIVITY:
+
+      let newArr = state[action.payload.category].filter((el) => el.id != action.payload.id);
+      return {
+        ...state,
+        [action.payload.category]: newArr
       }
     case PATCH_ACTIVITY:
       let {category, index, activity} = action.payload

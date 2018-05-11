@@ -1,4 +1,4 @@
-import { GET_ACTIVITIES, ADD_ACTIVITY, PATCH_ACTIVITY, CATEGORIZE_ACTIVITY } from './types'; 
+import { GET_ACTIVITIES, ADD_ACTIVITY, PATCH_ACTIVITY, CATEGORIZE_ACTIVITY, DELETE_ACTIVITY } from './types'; 
 import { createStore } from 'redux';
 import moment from 'moment';
 
@@ -18,6 +18,13 @@ export const patchActivity = ({ activity, category, index }, data) => {
   return {
     type: PATCH_ACTIVITY,
     payload: {activity, category, index, data}
+  }
+}
+
+export const deleteActivity = (id, category) => {
+  return {
+    type: DELETE_ACTIVITY,
+    payload: {id, category}
   }
 }
 
